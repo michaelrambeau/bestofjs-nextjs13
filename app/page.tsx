@@ -1,57 +1,96 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+import Image from "next/image";
+import NextLink from "next/link";
+import { GoFlame } from "react-icons/go";
+import { createSearchClient } from "./backend";
+import { SectionHeading } from "./components/core/section";
+import {
+  ProjectScore,
+  ProjectTable,
+} from "./components/project-list/project-table";
+// import styles from './page.module.css'
 
-export default function Home() {
+export default async function Home() {
+  const { hotProjects } = await getData();
   return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js 13!</a>
-        </h1>
+    <>
+      <h1 className="text-3xl mb-4">The best of JavaScript, HTML and CSS</h1>
+      <SectionHeading
+        icon={<GoFlame fontSize={32} />}
+        title="Hot Projects"
+        subtitle={
+          <>
+            by number of stars added <b>the last 24 hours</b>
+          </>
+        }
+      />
+      <HotProjectList projects={hotProjects} />
+    </>
+  );
+}
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://beta.nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js 13</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
+function HotProjectList({ projects }:{projects: BestOfJS.Project[]}) {
+  return (
+    <>
+      <ProjectTable
+        projects={projects}
+        showDetails={false}
+        metricsCell={(project) => (
+          <ProjectScore project={project} sortOptionId="daily" />
+        )}
+        footer={
+          <NextLink
+            href={`/projects?sort=daily`}
+            passHref
+            className="btn btn-outline"
           >
-            <h2>Examples &rarr;</h2>
-            <p>Explore the Next.js 13 playground.</p>
-          </a>
+            View full rankings »
+          </NextLink>
+        }
+      />
+    </>
+  );
+}
 
-          <a
-            href="https://vercel.com/templates/next.js/app-directory?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>Deploy your Next.js site to a public URL with Vercel.</p>
-          </a>
-        </div>
-      </main>
+async function getData() {
+  const searchClient = createSearchClient();
+  const { projects: hotProjects } = await searchClient.findProjects({
+    criteria: {
+      tags: { $nin: ["meta", "learning"] },
+    },
+    sort: {
+      "trends.daily": -1,
+    },
+    limit: 5,
+  });
+  return { hotProjects };
+  // const { projects: hotProjects } = await searchClient.findProjects({
+  //   criteria: {
+  //     tags: { $nin: ["meta", "learning"] },
+  //   },
+  //   sort: {
+  //     "trends.daily": -1,
+  //   },
+  //   limit: 5,
+  // });
 
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
-    </div>
-  )
+  // const { projects: newestProjects } = await searchClient.findProjects({
+  //   criteria: {},
+  //   limit: 5,
+  // });
+
+  // const bestOfJSProject = await searchClient.findOne({
+  //   full_name: "bestofjs/bestofjs-webui",
+  // });
+
+  // const { tags: popularTags } = await searchClient.findTags({
+  //   sort: { counter: -1 },
+  //   limit: 10,
+  // });
+
+  // return {
+  //   hotProjects,
+  //   newestProjects,
+  //   bestOfJSProject,
+  //   popularTags,
+  // };
 }
