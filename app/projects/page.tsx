@@ -9,6 +9,8 @@ import {
 } from "../components/project-list/sort-order-options";
 import { ProjectSearchQuery, ProjectSearchQueryUpdater } from "./types";
 
+export const revalidate = 0; // needed otherwise Next.js always renders the same page, ignoring the query string parameters
+
 type ProjectPageSearchParams = {
   tags?: string;
   query?: string;
