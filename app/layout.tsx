@@ -19,7 +19,7 @@ export default function RootLayout({
         <div className="flex flex-col min-h-screen">
           <AppNavBar />
           <div className="flex-auto">
-            <div className="app-container py-4">{children}</div>
+            <div className="app-container py-6">{children}</div>
           </div>
           <Footer />
         </div>
