@@ -102,8 +102,8 @@ select {
 body {
   font-size: 1rem;
   line-height: 1.3333;
-  color: var(--textPrimaryColor);
-  background-color: var(--backgroundColor);
+  /* color: var(--textPrimaryColor);
+  background-color: var(--backgroundColor); */
   overflow-x: hidden;
 }
 .text-secondary {

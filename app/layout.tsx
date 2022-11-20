@@ -8,7 +8,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" data-theme="halloween">
       <head>
         <title>Best of JS + Next 13</title>
         <meta name="description" content="Best of JS" />

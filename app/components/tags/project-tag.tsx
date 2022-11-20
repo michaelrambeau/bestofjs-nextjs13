@@ -38,7 +38,7 @@ export const ProjectTag = ({
     : `/projects?tags=${tag.code}`;
 
   return (
-    <NextLink href={url} className="btn btn-xs">
+    <NextLink href={url} className="btn btn-sm normal-case">
       {tag.name}
     </NextLink>
   );

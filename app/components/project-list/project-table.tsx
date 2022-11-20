@@ -75,26 +75,28 @@ const ProjectTableRow = ({
           <NextLink href={path} className="link link-hover">
             {project.name}
           </NextLink>
-          <a
-            href={project.repository}
-            aria-label="GitHub repository"
-            rel="noopener noreferrer"
-            target="_blank"
-            className="btn btn-circle"
-          >
-            <GoMarkGithub size={20} />
-          </a>
-          {project.url && (
+          <div className="flex space-x-1">
             <a
-              href={project.url}
-              aria-label="Project's homepage"
+              href={project.repository}
+              aria-label="GitHub repository"
               rel="noopener noreferrer"
               target="_blank"
-              className="btn btn-circle"
+              className="btn btn-circle btn-ghost w-10 h-10 min-h-[2.5rem]"
             >
-              <GoHome size={20} />
+              <GoMarkGithub size={24} />
             </a>
-          )}
+            {project.url && (
+              <a
+                href={project.url}
+                aria-label="Project's homepage"
+                rel="noopener noreferrer"
+                target="_blank"
+                className="btn btn-circle btn-ghost w-10 h-10 min-h-[2.5rem]"
+              >
+                <GoHome size={24} />
+              </a>
+            )}
+          </div>
         </div>
 
         <div className="mt-2 text-sm mb-3">
@@ -110,12 +112,12 @@ const ProjectTableRow = ({
       </Cell>
 
       {showDetails && (
-        <Cell className="hidden w-[170px] text-sm md:table-cell p-4">
+        <Cell className="hidden w-[180px] text-sm md:table-cell p-4 space-y-2">
           <div>Pushed {fromNow(project.pushed_at)}</div>
           {project.contributor_count && (
             <div>{formatNumber(project.contributor_count)} contributors</div>
           )}
-          <>Created {fromNow(project.created_at)}</>
+          <div>Created {fromNow(project.created_at)}</div>
         </Cell>
       )}
 

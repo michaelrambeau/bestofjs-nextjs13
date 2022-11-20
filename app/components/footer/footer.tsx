@@ -1,4 +1,7 @@
 import Image from "next/image";
+import NextLink from "next/link";
+
+import { RISING_STARS_URL, STATE_OF_JS_URL } from "../../config";
 
 export const Footer = () => {
   return (
@@ -14,13 +17,21 @@ export const Footer = () => {
         </div>
         <div>
           <span className="footer-title">Direct links</span>
-          <a className="link link-hover">Projects</a>
-          <a className="link link-hover">Tags</a>
+          <NextLink href="/projects" className="link link-hover">
+            Projects
+          </NextLink>
+          <NextLink href="/tags" className="link link-hover">
+            Tags
+          </NextLink>
         </div>
         <div>
           <span className="footer-title">Related projects</span>
-          <a className="link link-hover">Rising Stars</a>
-          <a className="link link-hover">State of JS</a>
+          <a href={RISING_STARS_URL} className="link link-hover" target="_blank" rel="noreferrer">
+            Rising Stars
+          </a>
+          <a href={STATE_OF_JS_URL} className="link link-hover" target="_blank" rel="noreferrer">
+            State of JS
+          </a>
         </div>
       </footer>
     </div>
