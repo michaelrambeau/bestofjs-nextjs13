@@ -1,6 +1,6 @@
-import { searchClient } from "../../backend";
+import { searchClient } from "~/backend";
 import { ProjectHeader } from "../../components/project-details/project-header";
-import { ReadmeCard } from "./project-readme";
+import { ReadmeCard } from "./project-readme/project-readme";
 
 type PageProps = {
   params: {
@@ -15,7 +15,7 @@ export default async function ProjectDetailsPage({ params }: PageProps) {
   return (
     <div className="flex flex-col space-y-6">
       <ProjectHeader project={project} />
-      {/* @ts-expect-error Server Component */} 
+      {/* @ts-expect-error Server Component */}
       <ReadmeCard project={project} />
     </div>
   );

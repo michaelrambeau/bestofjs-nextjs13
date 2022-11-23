@@ -1,3 +1,6 @@
+import { Suspense } from "react";
+
+import { ErrorBoundary } from "~/error-handling";
 import "./readme.css";
 
 export async function ReadmeCard({ project }: { project: BestOfJS.Project }) {
@@ -5,8 +8,12 @@ export async function ReadmeCard({ project }: { project: BestOfJS.Project }) {
     <div className="border rounded-md bg-neutral-700">
       <div className="p-4 border-b">README</div>
       <div className="p-4 markdown-body">
-        {/* @ts-expect-error Server Component */} 
-        <ReadmeContent project={project} />
+        <ErrorBoundary fallback={<>Unable to load the project README</>}>
+          <Suspense fallback={<>Loading README.md</>}>
+            {/* @ts-expect-error Server Component */}
+            <ReadmeContent project={project} />
+          </Suspense>
+        </ErrorBoundary>
       </div>
     </div>
   );
