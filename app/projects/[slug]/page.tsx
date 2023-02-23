@@ -1,4 +1,5 @@
 import { searchClient } from "~/backend";
+import { getHotProjectsRequest } from "~/backend-search-requests";
 import { ProjectHeader } from "../../components/project-details/project-header";
 import { ReadmeCard } from "./project-readme/project-readme";
 
@@ -24,4 +25,12 @@ export default async function ProjectDetailsPage({ params }: PageProps) {
 async function getData(projectSlug: string) {
   const project = await searchClient.getProjectBySlug(projectSlug);
   return project;
+}
+
+export async function generateStaticParams() {
+  const { projects: hotProjects } = await searchClient.findProjects(
+    getHotProjectsRequest()
+  );
+
+  return hotProjects.map((project) => ({ slug: project.slug }));
 }

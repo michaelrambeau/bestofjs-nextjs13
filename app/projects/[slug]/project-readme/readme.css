@@ -1159,3 +1159,21 @@
 .dark .markdown-body .blob-code-inner {
   color: #c9d1d9;
 }
+
+/* 
+Images can target light/dark modes
+https://github.blog/changelog/2021-11-24-specify-theme-context-for-images-in-markdown/ 
+E.g. TailwindCSS
+*/
+.light .markdown-body [href$="#gh-dark-mode-only"] {
+  display: none;
+}
+.dark .markdown-body [href$="#gh-light-mode-only"] {
+  display: none;
+}
+/*
+Override img {height: auto} (set by daisyUI?), see Mermaid SVG logo
+*/
+.markdown-body img {
+  height: revert-layer; 
+}
