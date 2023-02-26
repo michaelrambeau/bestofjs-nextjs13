@@ -10,7 +10,7 @@ export default function ProjectReadmeError({ error }: Props) {
   return (
     <>
       <h1>Error</h1>
-      <p>Unable to load the project\'s README!</p>
+      <p>Unable to load the project&lsquo;s README!</p>
       <code>{error.message}</code>
     </>
   );

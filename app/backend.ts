@@ -1,7 +1,6 @@
 import debugModule from "debug";
 import * as mingo from "mingo";
 import { RawObject } from "mingo/types";
-// import fetch from "node-fetch";
 import slugify from "slugify";
 
 // const FETCH_ALL_PROJECTS_URL = process.env.JSON_API;
@@ -176,7 +175,7 @@ function getTagsByKey(
 ) {
   const byKey = tags.reduce((acc, tag) => {
     return { ...acc, [tag.code]: tag };
-  }, {}) as {[tag: string]: BestOfJS.Tag};
+  }, {}) as { [tag: string]: BestOfJS.Tag };
 
   projects.forEach(({ tags }) => {
     tags.forEach((tag) => {
@@ -187,26 +186,28 @@ function getTagsByKey(
   return byKey;
 }
 
-const populateProject = (tagsByKey: {[key: string]:BestOfJS.Tag}) => (project: BestOfJS.RawProject) => {
-  const populated = { ...project } as unknown as BestOfJS.Project;
-  const { full_name, tags } = project;
+const populateProject =
+  (tagsByKey: { [key: string]: BestOfJS.Tag }) =>
+  (project: BestOfJS.RawProject) => {
+    const populated = { ...project } as unknown as BestOfJS.Project;
+    const { full_name, tags } = project;
 
-  if (full_name) {
-    populated.repository = "https://github.com/" + full_name;
-  }
+    if (full_name) {
+      populated.repository = "https://github.com/" + full_name;
+    }
 
-  if (tags) {
-    populated.tags = tags.map((id) => tagsByKey[id]).filter((tag) => !!tag);
-  }
+    if (tags) {
+      populated.tags = tags.map((id) => tagsByKey[id]).filter((tag) => !!tag);
+    }
 
-  populated.slug = getProjectId(project);
+    populated.slug = getProjectId(project);
 
-  if (project.npm) {
-    populated.packageName = project.npm; // TODO fix data?
-  }
+    if (project.npm) {
+      populated.packageName = project.npm; // TODO fix data?
+    }
 
-  return populated;
-};
+    return populated;
+  };
 
 async function fetchProjectData(): Promise<{
   projects: BestOfJS.RawProject[];
@@ -216,7 +217,8 @@ async function fetchProjectData(): Promise<{
   try {
     const url = FETCH_ALL_PROJECTS_URL + `/projects.json`;
     console.log(`Fetching JSON data from ${url}`);
-    const data = await fetch(url).then((res) => res.json());
+    const options = { next: { revalidate: 60 * 60 } }; // Revalidate in one hour
+    const data = await fetch(url, options).then((res) => res.json());
 
     debug("We got data!", data.date);
 
@@ -237,10 +239,10 @@ function getResultRelevantTags(
   excludedTags: string[] = []
 ) {
   const projectCountByTag = getTagsFromProjects(projects, excludedTags);
-  return( orderBy(
+  return orderBy(
     Array.from(projectCountByTag.entries()),
     ([_, count]) => count as number
-  ).slice(0, 5)) as Array<[tag: string, count: number]>;
+  ).slice(0, 5) as Array<[tag: string, count: number]>;
 }
 
 function orderBy<T>(items: T[], fn: (item: T) => number) {

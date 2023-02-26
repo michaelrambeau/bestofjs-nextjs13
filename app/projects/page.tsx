@@ -11,7 +11,7 @@ import { ProjectSearchQuery, ProjectSearchQueryUpdater } from "./types";
 
 // needed when running the built app (`start` command)
 // otherwise Next.js always renders the same page, ignoring the query string parameters!
-export const revalidate = 0; 
+export const revalidate = 0;
 
 type ProjectPageSearchParams = {
   tags?: string;
@@ -105,7 +105,7 @@ const makeArray = (value: string | string[]) =>
 //   return new Promise((resolve) => setTimeout(resolve, delay));
 // }
 
-export function parseSearchParams(
+function parseSearchParams(
   params: ProjectPageSearchParams
 ): ProjectSearchQuery {
   return {
@@ -126,7 +126,7 @@ function toArray(input: string | undefined, separator = "+") {
   return input ? input.split(separator) : [];
 }
 
-export function stateToQueryString({
+function stateToQueryString({
   query,
   tags,
   sort,

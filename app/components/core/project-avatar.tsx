@@ -8,6 +8,7 @@ export const ProjectAvatar = ({ project, size = 100 }: Props) => {
   const { src, srcSet } = getProjectImageProps({ project, size, colorMode });
 
   return (
+    // eslint-disable-next-line @next/next/no-img-element
     <img
       src={src}
       srcSet={srcSet}
