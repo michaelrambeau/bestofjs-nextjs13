@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export const AppNavBar = () => {
   return (
-    <header className="border-b-2 border-orange-700">
+    <header>
       <div className="app-container">
         <div className="navbar bg-base-100">
           <div className="flex-1">
@@ -13,7 +13,13 @@ export const AppNavBar = () => {
           <div className="flex-none">
             <ul className="menu menu-horizontal p-0">
               <li>
-                <Link href="/projects">Projects</Link>
+                {/* 
+                Calling `/projects` without any query string makes
+                the server component re-uses the previous search parameters!
+                We set the default `sort` parameter to avoid this 
+                and keep the URL in sync with the component
+                */}
+                <Link href="/projects?sort=total">Projects</Link>
               </li>
               <li>
                 <Link href="/tags">Tags</Link>

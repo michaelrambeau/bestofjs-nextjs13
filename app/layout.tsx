@@ -1,5 +1,6 @@
 import { Footer } from "./components/footer/footer";
 import { AppNavBar } from "./components/header/navbar";
+import { SearchBox } from "./components/search-box/search-box";
 import "./globals.css";
 
 export default function RootLayout({
@@ -18,6 +19,8 @@ export default function RootLayout({
       <body>
         <div className="flex flex-col min-h-screen">
           <AppNavBar />
+          {/* @ts-expect-error Server Component */}
+          <SearchBox />
           <div className="flex-auto">
             <div className="app-container py-6">{children}</div>
           </div>

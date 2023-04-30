@@ -1,4 +1,8 @@
-import { stringify } from "qs";
+import {
+  parseSearchParams,
+  ProjectPageSearchParams,
+  stateToQueryString,
+} from "~/components/project-list/navigation-state";
 
 import { searchClient } from "../backend";
 import { ProjectPaginatedList } from "../components/project-list/project-paginated-list";
@@ -7,27 +11,22 @@ import {
   SortOptionKey,
   sortOrderOptionsByKey,
 } from "../components/project-list/sort-order-options";
-import { ProjectSearchQuery, ProjectSearchQueryUpdater } from "./types";
+import { ProjectSearchQueryUpdater } from "./types";
 
 // needed when running the built app (`start` command)
 // otherwise Next.js always renders the same page, ignoring the query string parameters!
-export const revalidate = 0;
-
-type ProjectPageSearchParams = {
-  tags?: string;
-  query?: string;
-  page?: string;
-  limit?: string;
-  sort?: string;
-};
+// export const revalidate = 0;
+export const dynamic = "force-dynamic";
 
 type ProjectsPageData = {
   projects: BestOfJS.Project[];
   total: number;
   page: number;
   limit: number;
+  tags: string[];
   selectedTags: BestOfJS.Tag[];
   relevantTags: BestOfJS.Tag[];
+  allTags: BestOfJS.Tag[];
   sortOptionId: SortOptionKey;
 };
 
@@ -48,17 +47,15 @@ export default async function Projects({ searchParams }: PageProps) {
   };
 
   return (
-    <>
-      <ProjectPaginatedList
-        projects={projects}
-        page={page}
-        limit={limit}
-        total={total}
-        sortOptionId={sortOptionId}
-        searchState={searchState}
-        buildPageURL={buildPageURL}
-      />
-    </>
+    <ProjectPaginatedList
+      projects={projects}
+      page={page}
+      limit={limit}
+      total={total}
+      sortOptionId={sortOptionId}
+      searchState={searchState}
+      buildPageURL={buildPageURL}
+    />
   );
 }
 
@@ -70,16 +67,19 @@ async function getData(
 
   const { projects, selectedTags, relevantTags, total } =
     await searchClient.findProjects({
-      criteria:
-        tags.length > 0
-          ? {
-              tags: { $all: makeArray(tags) },
-            }
-          : {},
+      criteria: tags.length > 0 ? { tags: { $all: tags } } : {},
       sort: sortOption.sort,
       skip: limit * (page - 1),
       limit,
     });
+
+  const { tags: allTags } = await searchClient.findTags({
+    criteria: {},
+    sort: { name: 1 },
+    limit: 300,
+    skip: 0,
+    projection: {},
+  });
 
   return {
     projects,
@@ -89,6 +89,8 @@ async function getData(
     sortOptionId: sortOption.key,
     selectedTags,
     relevantTags,
+    tags,
+    allTags,
   };
 }
 
@@ -96,56 +98,4 @@ function getSortOption(sortKey: string): SortOption {
   const defaultOption = sortOrderOptionsByKey.daily;
   if (!sortKey) return defaultOption;
   return sortOrderOptionsByKey[sortKey as SortOptionKey] || defaultOption;
-}
-
-const makeArray = (value: string | string[]) =>
-  Array.isArray(value) ? value : [value];
-
-// function wait(delay = 2000) {
-//   return new Promise((resolve) => setTimeout(resolve, delay));
-// }
-
-function parseSearchParams(
-  params: ProjectPageSearchParams
-): ProjectSearchQuery {
-  return {
-    query: "",
-    tags: toArray(params.tags),
-    page: toInteger(params.page, 1),
-    limit: toInteger(params.limit, 10),
-    sort: (params.sort || "total") as SortOptionKey,
-  };
-}
-
-function toInteger(input: string | undefined, defaultValue = 1) {
-  if (!input) return defaultValue;
-  return isNaN(Number(input)) ? defaultValue : parseInt(input, 0);
-}
-
-function toArray(input: string | undefined, separator = "+") {
-  return input ? input.split(separator) : [];
-}
-
-function stateToQueryString({
-  query,
-  tags,
-  sort,
-  direction,
-  page,
-}: ProjectSearchQuery) {
-  const queryString = stringify(
-    {
-      query: query || null,
-      tags: tags.length === 0 ? null : tags,
-      sort: sort === "" ? null : sort,
-      page: page === 1 ? null : page,
-      direction,
-    },
-    {
-      encode: false,
-      arrayFormat: "repeat",
-      skipNulls: true,
-    }
-  );
-  return queryString;
 }
