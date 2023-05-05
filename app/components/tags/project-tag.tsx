@@ -1,12 +1,12 @@
 import React from "react";
 import NextLink from "next/link";
-import { MdAdd } from "react-icons/md";
-import { ProjectUrlBuilder } from "../../projects/types";
+// import { MdAdd } from "react-icons/md";
+import { ProjectSearchQuery, SearchUrlBuilder } from "../../projects/types";
 
 type Props = {
   tags: BestOfJS.Tag[];
   appendTag?: boolean;
-  buildPageURL?: ProjectUrlBuilder;
+  buildPageURL?: SearchUrlBuilder<ProjectSearchQuery>;
 };
 export const ProjectTagGroup = ({ tags, ...otherProps }: Props) => {
   return (

@@ -11,11 +11,11 @@ import {
 } from "../core";
 import { fromNow } from "../../helpers/from-now";
 import { ProjectTagGroup } from "../tags/project-tag";
-import { ProjectUrlBuilder } from "../../projects/types";
+import { ProjectSearchQuery, SearchUrlBuilder } from "../../projects/types";
 
 type Props = {
   projects: BestOfJS.Project[];
-  buildPageURL?: ProjectUrlBuilder;
+  buildPageURL?: SearchUrlBuilder<ProjectSearchQuery>;
   footer?: React.ReactNode;
   metricsCell?: (project: BestOfJS.Project) => React.ReactNode;
   showDetails?: boolean;

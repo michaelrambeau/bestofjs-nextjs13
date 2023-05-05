@@ -1,12 +1,14 @@
+export type PaginationProps = {
+  page: number;
+  limit: number;
+};
 export type ProjectSearchQuery = {
   tags: string[];
   query: string;
-  page: number;
-  limit: number;
   sort: string;
   direction?: "desc" | "asc";
-};
+} & PaginationProps;
 
-export type ProjectSearchQueryUpdater = (searchQueryState: ProjectSearchQuery) => ProjectSearchQuery;
+export type SearchQueryUpdater<T> = (searchQueryState: T) => T;
 
-export type ProjectUrlBuilder = (updater: ProjectSearchQueryUpdater) => string;
+export type SearchUrlBuilder<T> = (updater: SearchQueryUpdater<T>) => string;

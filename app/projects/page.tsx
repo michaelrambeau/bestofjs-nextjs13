@@ -11,7 +11,7 @@ import {
   SortOptionKey,
   sortOrderOptionsByKey,
 } from "../components/project-list/sort-order-options";
-import { ProjectSearchQueryUpdater } from "./types";
+import { ProjectSearchQuery, SearchQueryUpdater } from "./types";
 
 // needed when running the built app (`start` command)
 // otherwise Next.js always renders the same page, ignoring the query string parameters!
@@ -40,7 +40,7 @@ export default async function Projects({ searchParams }: PageProps) {
 
   const searchState = parseSearchParams(searchParams);
 
-  const buildPageURL = (updater: ProjectSearchQueryUpdater) => {
+  const buildPageURL = (updater: SearchQueryUpdater<ProjectSearchQuery>) => {
     const nextState = updater(searchState);
     const queryString = stateToQueryString(nextState);
     return "/projects?" + queryString;

@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { ProjectSearchQueryUpdater } from "~/projects/types";
+import { ProjectSearchQuery, SearchQueryUpdater } from "~/projects/types";
 import {
   parseSearchParams,
   ProjectPageSearchParams,
@@ -27,7 +27,7 @@ export const TagPickerWrapper = ({ allTags }: Props) => {
 
   const { tags } = searchState;
 
-  const buildPageURL = (updater: ProjectSearchQueryUpdater) => {
+  const buildPageURL = (updater: SearchQueryUpdater<ProjectSearchQuery>) => {
     const nextState = updater(searchState);
     const queryString = stateToQueryString(nextState);
     return "/projects?" + queryString;

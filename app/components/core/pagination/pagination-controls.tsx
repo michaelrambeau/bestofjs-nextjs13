@@ -8,32 +8,28 @@ import NextLink from "next/link";
 //   ChevronLeftIcon,
 // } from "../icons";
 import { PaginationState } from "./pagination-state";
-import {
-  ProjectSearchQuery,
-  ProjectSearchQueryUpdater,
-  ProjectUrlBuilder,
-} from "../../../projects/types";
+import { PaginationProps, SearchUrlBuilder } from "../../../projects/types";
 
 // const iconSize = 28;
 
-type Props = {
+type Props<T> = {
   paginationState: PaginationState;
-  buildPageURL: ProjectUrlBuilder;
+  buildPageURL: SearchUrlBuilder<T>;
 };
-export const TopPaginationControls = ({
-  paginationState,
-  buildPageURL,
-}: Props) => {
+export const TopPaginationControls = <T extends PaginationProps>(
+  props: Props<T>
+) => {
+  const { paginationState, buildPageURL } = props;
   const { from, to, total, hasPreviousPage, hasNextPage } = paginationState;
 
   const previousPageURL = buildPageURL(
-    (state: ProjectSearchQuery) =>
+    (state: T) =>
       ({
         ...state,
         page: state.page - 1,
-      } as ProjectSearchQuery)
+      } as T)
   );
-  const nextPageURL = buildPageURL((state: ProjectSearchQuery) => ({
+  const nextPageURL = buildPageURL((state: T) => ({
     ...state,
     page: state.page + 1,
   }));
@@ -76,7 +72,9 @@ function PaginationButton({
       {children}
     </NextLink>
   ) : (
-    <button disabled className="btn btn-outline btn-disabled">{children}</button>
+    <button disabled className="btn btn-outline btn-disabled">
+      {children}
+    </button>
   );
 }
 

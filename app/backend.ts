@@ -33,6 +33,13 @@ const defaultQueryParams: QueryParams = {
   projection: {},
 };
 
+const defaultTagSearchQuery = {
+  criteria: {},
+  sort: {},
+  limit: 0,
+  skip: 0,
+};
+
 export function createSearchClient() {
   let data: Data;
   async function getData() {
@@ -100,10 +107,11 @@ export function createSearchClient() {
       };
     },
 
-    async findTags(searchQuery: QueryParams) {
+    async findTags(rawSearchQuery: Partial<QueryParams>) {
+      const searchQuery = { ...defaultTagSearchQuery, ...rawSearchQuery };
       const { criteria, sort, skip, limit } = searchQuery;
       const { tagCollection } = await getData();
-      const query = new mingo.Query(criteria || {});
+      const query = new mingo.Query(criteria);
       let cursor = query.find(tagCollection);
       const total = cursor.count();
 
@@ -112,7 +120,7 @@ export function createSearchClient() {
         .sort(sort)
         .skip(skip)
         .limit(limit)
-        .all() as BestOfJS.RawTag[];
+        .all() as BestOfJS.Tag[];
 
       return {
         tags,
@@ -120,8 +128,15 @@ export function createSearchClient() {
       };
     },
 
-    // return tags with the most popular projects, for each tag
-    async findTagsWithProjects(searchQuery: QueryParams) {
+    // return tags with the most popular projects, for each tag (used for `/tags` page)
+    async findTagsWithProjects(rawSearchQuery: Partial<QueryParams>) {
+      const defaultTagSearchQuery = {
+        criteria: {},
+        sort: {},
+        limit: 0,
+        skip: 0,
+      };
+      const searchQuery = { ...defaultTagSearchQuery, ...rawSearchQuery };
       const { criteria, sort, skip, limit } = searchQuery;
       const { tagCollection } = await getData();
       const query = new mingo.Query(criteria || {});
