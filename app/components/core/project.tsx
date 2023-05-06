@@ -1,8 +1,8 @@
-import React from 'react';
-import numeral from 'numeral';
-import slugify from 'slugify';
+import React from "react";
+import numeral from "numeral";
+import slugify from "slugify";
 
-import { StarIcon } from './icons';
+import { StarIcon } from "./icons";
 
 type Props = {
   value: number;
@@ -10,15 +10,15 @@ type Props = {
 
 export const DownloadCount = ({ value }: Props) => {
   if (value === undefined) {
-    return <div className="star-delta text-secondary text-small">N/A</div>;
+    return <div className="star-delta text-small text-secondary">N/A</div>;
   }
 
-  return <span>{numeral(value).format('a')}</span>;
+  return <span>{numeral(value).format("a")}</span>;
 };
 
 const getSign = (value: number) => {
-  if (value === 0) return '';
-  return value > 0 ? '+' : '-';
+  if (value === 0) return "";
+  return value > 0 ? "+" : "-";
 };
 
 export const StarDelta = ({
@@ -30,14 +30,12 @@ export const StarDelta = ({
 const StarDeltaNormal = ({ value }: Props) => {
   const sign = getSign(value);
   return (
-    <div className='flex items-center'>
+    <div className="flex items-center">
       {value === 0 ? (
-        '='
+        "="
       ) : (
         <>
-          <span className="mr-0.5">
-            {sign}
-          </span>
+          <span className="mr-0.5">{sign}</span>
           <span>{formatBigNumber(Math.abs(value))}</span>
           <StarIcon />
         </>
@@ -54,10 +52,10 @@ export const StarDeltaAverage = ({ value }: Props) => {
   const sign = getSign(value);
 
   if (value === undefined)
-    return <div className="star-delta text-secondary text-small">N/A</div>;
+    return <div className="star-delta text-small text-secondary">N/A</div>;
 
   return (
-    <div className='flex items-center'>
+    <div className="flex items-center">
       <span>{sign}</span>
       <span>{integerPart}</span>
       <span className="text-secondary">.{decimalPart}</span>
@@ -69,9 +67,9 @@ export const StarDeltaAverage = ({ value }: Props) => {
 
 export const StarTotal = ({ value }: Props) => {
   return (
-    <div className='inline-flex'>
+    <div className="inline-flex items-center">
       <span>{formatBigNumber(value)}</span>
-      <StarIcon  />
+      <StarIcon />
     </div>
   );
 };
@@ -79,8 +77,8 @@ export const StarTotal = ({ value }: Props) => {
 // Display a (potentially) big number, either the total number of star or a yearly/monthly delta
 // using the `k` prefix
 function formatBigNumber(value: number): string {
-  const digits = value > 1000 && value < 10000 ? '0.0' : '0';
-  return numeral(value).format(digits + ' a');
+  const digits = value > 1000 && value < 10000 ? "0.0" : "0";
+  return numeral(value).format(digits + " a");
 }
 
 export function getProjectId(project: BestOfJS.RawProject) {
@@ -89,7 +87,7 @@ export function getProjectId(project: BestOfJS.RawProject) {
 
 export const getDeltaByDay =
   (period: string) =>
-  ({ trends }: { trends: BestOfJS.Project['trends'] }) => {
+  ({ trends }: { trends: BestOfJS.Project["trends"] }) => {
     const periods = {
       daily: 1,
       weekly: 7,

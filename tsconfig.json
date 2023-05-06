@@ -21,8 +21,14 @@
     ],
     "paths": {
       "~/*": ["./app/*"]
-    },
+    }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "app/projects/[slug]/project-details-github"
+  ],
   "exclude": ["node_modules"]
 }

@@ -1,6 +1,7 @@
 import { searchClient } from "~/backend";
 import { getHotProjectsRequest } from "~/backend-search-requests";
-import { ProjectHeader } from "../../components/project-details/project-header";
+import { ProjectHeader } from "./project-header";
+import { ProjectDetailsGitHubCard } from "./project-details-github/github-card";
 import { ReadmeCard } from "./project-readme/project-readme";
 
 type PageProps = {
@@ -11,11 +12,11 @@ type PageProps = {
 export default async function ProjectDetailsPage({ params }: PageProps) {
   const { slug } = params;
   const project = await getData(slug);
-  // const projectWithDetails = getProjectWithDetails(project, details);
 
   return (
-    <div className="flex flex-col space-y-6">
+    <div className="flex flex-col space-y-8">
       <ProjectHeader project={project} />
+      <ProjectDetailsGitHubCard project={project} />
       {/* @ts-expect-error Server Component */}
       <ReadmeCard project={project} />
     </div>

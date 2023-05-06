@@ -2,8 +2,8 @@ import { GoHome, GoMarkGithub } from "react-icons/go";
 import { DiNpm } from "react-icons/di";
 
 import formatUrl from "../../helpers/url";
-import { ProjectTagGroup } from "../tags/project-tag";
-import { ProjectAvatar } from "../core";
+import { ProjectTagGroup } from "../../components/tags/project-tag";
+import { ProjectAvatar } from "../../components/core";
 import React from "react";
 
 type Props = { project: BestOfJS.Project };
@@ -11,8 +11,8 @@ export const ProjectHeader = ({ project }: Props) => {
   const { full_name, packageName, repository, url } = project;
 
   return (
-    <div className="flex flex-col sm:flex-row mb-4 sm:divide-x sm:divide-dashed space-y-4 sm:space-y-0">
-      <div className="flex items-center grow min-h-[120px]">
+    <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:divide-x sm:divide-dashed">
+      <div className="flex min-h-[120px] grow items-center">
         <div className="pr-4">
           <ProjectAvatar project={project} size={75} />
         </div>
@@ -24,7 +24,7 @@ export const ProjectHeader = ({ project }: Props) => {
           </div>
         </div>
       </div>
-      <aside className="sm:w-[280px] sm:pl-4 flex flex-col space-y-2">
+      <aside className="flex flex-col space-y-2 sm:w-[280px] sm:pl-4">
         <ButtonLink href={repository} icon={<GoMarkGithub size={20} />}>
           {full_name}
         </ButtonLink>
@@ -63,10 +63,10 @@ const ButtonLink = ({
 }) => (
   <a
     href={href}
-    className="btn btn-outline w-full normal-case justify-start relative"
+    className="btn-outline btn relative w-full justify-start normal-case"
   >
     <span className="absolute">{icon}</span>
-    <span className="pl-[36px] overflow-hidden overflow-ellipsis whitespace-nowrap text-base">
+    <span className="overflow-hidden overflow-ellipsis whitespace-nowrap pl-[36px] text-base">
       {children}
     </span>
   </a>

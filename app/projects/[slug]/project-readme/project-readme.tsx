@@ -1,13 +1,20 @@
 import { Suspense } from "react";
+import { GoBook } from "react-icons/go";
+import { Card, CardHeader } from "~/components/core/card";
 
 import { ErrorBoundary } from "~/error-handling";
 import "./readme.css";
 
 export async function ReadmeCard({ project }: { project: BestOfJS.Project }) {
   return (
-    <div className="border rounded-md bg-neutral-700">
-      <div className="p-4 border-b">README</div>
-      <div className="p-4 markdown-body">
+    <Card>
+      <CardHeader>
+        <div className="flex space-x-2">
+          <GoBook size={24} />
+          <div>README</div>
+        </div>
+      </CardHeader>
+      <div className="markdown-body p-4">
         <ErrorBoundary fallback={<>Unable to load the project README</>}>
           <Suspense fallback={<>Loading README.md</>}>
             {/* @ts-expect-error Server Component */}
@@ -15,7 +22,7 @@ export async function ReadmeCard({ project }: { project: BestOfJS.Project }) {
           </Suspense>
         </ErrorBoundary>
       </div>
-    </div>
+    </Card>
   );
 }
 
